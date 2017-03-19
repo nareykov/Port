@@ -32,9 +32,21 @@ public class ShipsQueue {
 
     private Table table;
 
-    public synchronized void addShip(Ship ship) {
+    public synchronized void addShip(Table table, Ship ship) {
         ships.add(ship);
         sort();
+        table.removeAll();
+        for (int i = 0; i < ships.size(); i++) {
+            try {
+                TableItem item = new TableItem (table, SWT.NONE);
+                item.setText (0, "" + ships.get(i).getId());
+                item.setText (1, "" + ships.get(i).getPriority());
+                item.setText (2, "" + ships.get(i).getLoading());
+                item.setText (3, "" + ships.get(i).getUnloading());
+            } catch (IllegalArgumentException e) {
+
+            }
+        }
         notifyAll();
     }
 
