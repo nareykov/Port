@@ -1,5 +1,6 @@
 package Interface;
 
+import Dispatcher.Dispatcher;
 import Logic.Port;
 import Logic.Ship;
 import Logic.ShipsQueue;
@@ -21,6 +22,8 @@ public class MainWindow {
         //Port port = new Port(shipsQueue, 10,2);
 
         Port port = new Port(shipsQueue, 10,6);
+
+        new Dispatcher(port, shipsQueue);
 
         Display display = new Display();
         shipsQueue.setDisplay(display);
@@ -56,10 +59,10 @@ public class MainWindow {
             tableQueue.getColumn (i).pack ();
         }
 
-
+        final int[] f = {0};
         addShipBtn.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent event) {
-                shipsQueue.addShip( new Ship(0, 1, 2 ,0));
+                shipsQueue.addShip( new Ship(0, 1, 2 , f[0]++));
             }
         });
 

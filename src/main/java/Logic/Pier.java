@@ -21,8 +21,8 @@ public class Pier implements Runnable {
     public Pier(Port port, ShipsQueue shipsQueue) {
         this.shipsQueue = shipsQueue;
         this.port = port;
-        t = new Thread(this, "Logic.Pier(" + id + ")");
-        System.out.println("Logic.Pier(" + id + ") created");
+        t = new Thread(this, "Pier(" + id + ")");
+        System.out.println("Pier(" + id + ") created");
         t.start();
         id++;
     }
@@ -43,22 +43,22 @@ public class Pier implements Runnable {
     public void run() {
         while (true) {
             try {
-                Ship ship = shipsQueue.remove(0);
+                ship = shipsQueue.remove(0);
                 System.out.println(t.getName() + ": ship <==. ID:" + ship.getId());
-                kek(ship, "unloading");
+                refreshTableItem(ship, "unloading");
                 Thread.sleep(2000);
                 port.addToProduct(ship.getUnloading() - ship.getLoading());
-                kek(ship, "loading");
+                refreshTableItem(ship, "loading");
                 Thread.sleep(2000);
                 System.out.println(t.getName() + ": ship ==>. ID:" + ship.getId());
-                kek(null, "empty");
+                refreshTableItem(null, "empty");
             } catch (InterruptedException e) {
                 System.out.println(t.getName() + " interrupted");
             }
         }
     }
 
-    private synchronized void kek(final Ship ship, final String status) {
+    private synchronized void refreshTableItem(final Ship ship, final String status) {
         port.getDisplay().asyncExec(new Runnable() {
             @Override
             public void run() {

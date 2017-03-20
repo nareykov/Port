@@ -28,7 +28,7 @@ public class Port {
         for (int i = 0; i < size; i++) {
             piers.add(new Pier(this, shipsQueue));
         }
-        System.out.println("Logic.Port created");
+        System.out.println("Port created");
     }
 
     public int getProduct() {
@@ -68,7 +68,8 @@ public class Port {
     public void setTable(Table table) {
         this.table = table;
         for (int i = 0; i < piers.size(); i++) {
-            new TableItem(this.table, SWT.NONE);
+            TableItem tableItem = new TableItem(this.table, SWT.NONE);
+            tableItem.setText(0, "Pier(" + i + ")");
         }
     }
 
@@ -78,5 +79,9 @@ public class Port {
 
     public void setDisplay(Display display) {
         this.display = display;
+    }
+
+    public ArrayList<Pier> getPiers() {
+        return piers;
     }
 }
