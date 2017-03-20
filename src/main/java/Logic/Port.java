@@ -1,6 +1,10 @@
 package Logic;
 
 import Logic.Pier;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 
 import java.util.ArrayList;
 
@@ -13,6 +17,9 @@ public class Port {
     private ArrayList<Pier> piers;
 
     private ShipsQueue shipsQueue;
+
+    private Table table;
+    private Display display;
 
     public Port(ShipsQueue shipsQueue, int product, int size) {
         this.shipsQueue = shipsQueue;
@@ -52,5 +59,24 @@ public class Port {
                 e.printStackTrace();
             }
         }
+    }
+
+    public Table getTable() {
+        return table;
+    }
+
+    public void setTable(Table table) {
+        this.table = table;
+        for (int i = 0; i < piers.size(); i++) {
+            new TableItem(this.table, SWT.NONE);
+        }
+    }
+
+    public Display getDisplay() {
+        return display;
+    }
+
+    public void setDisplay(Display display) {
+        this.display = display;
     }
 }

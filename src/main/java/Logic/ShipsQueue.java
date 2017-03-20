@@ -31,22 +31,12 @@ public class ShipsQueue {
     private ArrayList<Ship> ships = new ArrayList<Ship>();
 
     private Table table;
+    private Display display;
 
-    public synchronized void addShip(Table table, Ship ship) {
+    public synchronized void addShip( Ship ship) {
         ships.add(ship);
         sort();
-        table.removeAll();
-        for (int i = 0; i < ships.size(); i++) {
-            try {
-                TableItem item = new TableItem (table, SWT.NONE);
-                item.setText (0, "" + ships.get(i).getId());
-                item.setText (1, "" + ships.get(i).getPriority());
-                item.setText (2, "" + ships.get(i).getLoading());
-                item.setText (3, "" + ships.get(i).getUnloading());
-            } catch (IllegalArgumentException e) {
-
-            }
-        }
+        refreshQueueTable();
         notifyAll();
     }
 
@@ -62,14 +52,21 @@ public class ShipsQueue {
                 System.out.println(Thread.currentThread().getName() + " interrupted");
             }
         }
-        return ships.remove(index);
+
+        Ship ship = ships.remove(index);
+        display.asyncExec (new Runnable () {
+            public void run () {
+                refreshQueueTable();
+            }
+        });
+        return ship;
     }
 
     public void setShips(ArrayList<Ship> ships) {
         this.ships = ships;
     }
 
-    public void sort() {
+    private void sort() {
         ships.sort(comparator);
     }
 
@@ -79,5 +76,28 @@ public class ShipsQueue {
 
     public void setTable(Table table) {
         this.table = table;
+    }
+
+    private void refreshQueueTable() {
+        table.removeAll();
+        for (int i = 0; i < ships.size(); i++) {
+            try {
+                TableItem item = new TableItem (table, SWT.NONE);
+                item.setText (0, "" + ships.get(i).getId());
+                item.setText (1, "" + ships.get(i).getPriority());
+                item.setText (2, "" + ships.get(i).getLoading());
+                item.setText (3, "" + ships.get(i).getUnloading());
+            } catch (IllegalArgumentException e) {
+
+            }
+        }
+    }
+
+    public Display getDisplay() {
+        return display;
+    }
+
+    public void setDisplay(Display display) {
+        this.display = display;
     }
 }
