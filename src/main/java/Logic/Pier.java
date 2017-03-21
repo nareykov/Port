@@ -1,7 +1,10 @@
 package Logic;
 
+import DataBase.DataBase;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.TableItem;
+
+import java.util.Random;
 
 /**
  * Created by narey on 18.03.2017.
@@ -17,6 +20,8 @@ public class Pier implements Runnable {
 
     private Port port;
     private ShipsQueue shipsQueue;
+
+    private static DataBase db = new DataBase();
 
     public Pier(Port port, ShipsQueue shipsQueue) {
         this.shipsQueue = shipsQueue;
@@ -43,15 +48,32 @@ public class Pier implements Runnable {
     public void run() {
         while (true) {
             try {
+                int number;
                 synchronized (this) {
                     ship = shipsQueue.remove();
                     port.addToProduct(ship.getUnloading() - ship.getLoading());
+
+                    Random rnd = new Random(System.currentTimeMillis());
+                    // Получаем случайное число в диапазоне от min до max (включительно)
+                    //int number = min + rnd.nextInt(max - min + 1);
+                    number = 6 + rnd.nextInt(15 - 6 + 1);
+                    db.connectToDataBase();
+                    if (number > ship.getDuration()) {
+                        db.updateShipInfo(ship.getId(), ship.getLoading(), ship.getUnloading(), 1);
+                    } else {
+                        db.updateShipInfo(ship.getId(), ship.getLoading(), ship.getUnloading(), 0);
+                    }
+                    db.closeDataBase();
                 }
                 System.out.println(t.getName() + ": ship <==. ID:" + ship.getId());
                 refreshTableItem(ship, "unloading");
-                Thread.sleep(2000);
+                Thread.sleep(ship.getDuration() * 1000 / 2);
                 refreshTableItem(ship, "loading");
-                Thread.sleep(2000);
+                Thread.sleep(ship.getDuration() * 1000 / 2);
+                if (number > ship.getDuration()) {
+                    refreshTableItem(ship, "LAGGGG");
+                    Thread.sleep((number - ship.getDuration()) * 1000);
+                }
                 System.out.println(t.getName() + ": ship ==>. ID:" + ship.getId());
                 refreshTableItem(null, "empty");
             } catch (InterruptedException e) {

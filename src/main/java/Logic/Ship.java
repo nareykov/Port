@@ -20,7 +20,7 @@ public class Ship {
         ID++;
     }
 
-    public Ship(int id, long duration, int loading, int unloading, int priority) {
+    public Ship(int id, int duration, int loading, int unloading, int priority) {
         this.id = id;
         this.duration = duration;
         this.loading = loading;

@@ -1,5 +1,6 @@
 package Interface;
 
+import DataBase.DataBase;
 import Dispatcher.Dispatcher;
 import Logic.Port;
 import Logic.Ship;
@@ -7,16 +8,10 @@ import Logic.ShipsQueue;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Label;
-
-import java.awt.*;
 
 /**
  * Created by narey on 19.03.2017.
@@ -24,6 +19,7 @@ import java.awt.*;
 public class MainWindow {
 
     private static final ShipsQueue shipsQueue = new ShipsQueue();
+    private static DataBase db = new DataBase();
 
     public static void main(String[] args) {
         //Port port = new Port(shipsQueue, 10,2);
@@ -118,11 +114,20 @@ public class MainWindow {
                     @Override
                     public void widgetSelected(SelectionEvent selectionEvent) {
                         try {
+                            db.connectToDataBase();
                             int id = Integer.parseInt(textID.getText());
                             int load = Integer.parseInt(textLoad.getText());
                             int unload = Integer.parseInt(textUnload.getText());
                             int priority = Integer.parseInt(textPriority.getText());
-                            shipsQueue.addShip( new Ship(id, 0, load, unload, priority));
+
+                            if (db.isRegistered(id)) {
+                                priority -= db.getTransgressions(id);
+                            } else {
+                                db.registerShip(id);
+                            }
+
+                            shipsQueue.addShip( new Ship(id, 10, load, unload, priority));
+                            db.closeDataBase();
                         } catch (NumberFormatException e) {
                             return;
                         }
@@ -149,10 +154,6 @@ public class MainWindow {
         for (int i=0; i<titlesPiers.length; i++) {
             tablePiers.getColumn (i).pack ();
         }
-
-        shipsQueue.addShip(new Ship(0, 20,0, 40));
-        shipsQueue.addShip(new Ship(0, 20,0, 6770));
-        shipsQueue.addShip(new Ship(0, 20,0, 450));
 
         shell.pack ();
         shell.open ();
