@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 /**
  * Created by narey on 18.03.2017.
+ * Порт. Содержит в себе склад (product) и причалы (piers)
  */
 public class Port {
     private static int product;
@@ -57,16 +58,6 @@ public class Port {
 
     public void setShipsQueue(ShipsQueue shipsQueue) {
         this.shipsQueue = shipsQueue;
-    }
-
-    public void wait1() {
-        for (int i = 0; i < piers.size(); i++) {
-            try {
-                piers.get(i).t.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public Table getTable() {

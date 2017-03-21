@@ -12,6 +12,7 @@ import java.util.*;
 
 /**
  * Created by narey on 18.03.2017.
+ * Очередь кораблей.
  */
 public class ShipsQueue {
     Comparator<Ship> comparator = new Comparator<Ship>() {
@@ -33,6 +34,10 @@ public class ShipsQueue {
     private Table table;
     private Display display;
 
+    /**
+     * Добавление корабля в очередь и сотртировка очереди по приоритету
+     * @param ship корабль
+     */
     public synchronized void addShip( Ship ship) {
         ships.add(ship);
         sort();
@@ -44,6 +49,10 @@ public class ShipsQueue {
         return ships;
     }
 
+    /**
+     * Функция изымания из очереди корабля
+     * @return возвращает ближайший по очереди корабль, которому хватит того, что есть на складе
+     */
     public synchronized Ship remove() {
         while (ships.isEmpty()) {
             try {
@@ -97,6 +106,9 @@ public class ShipsQueue {
         this.table = table;
     }
 
+    /**
+     * Обновляет таблицу очерреди кораблей
+     */
     private void refreshQueueTable() {
         table.removeAll();
         for (int i = 0; i < ships.size(); i++) {

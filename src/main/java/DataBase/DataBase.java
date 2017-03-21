@@ -91,6 +91,13 @@ public class DataBase {
         return true;
     }
 
+    /**
+     * Обновляет статистику корабля
+     * @param shipID айди корабля
+     * @param load загруженный товар
+     * @param unload разгруженный товар
+     * @param transgression нарушение
+     */
     public void updateShipInfo(int shipID, int load, int unload, int transgression) {
         try {
             stmt = c.createStatement();
@@ -117,6 +124,10 @@ public class DataBase {
         }
     }
 
+    /**
+     * Регистрация нового корабля на ведение статистики
+     * @param ShipID айди корабля
+     */
     public void registerShip(int ShipID) {
         try {
             stmt = c.createStatement();
@@ -134,6 +145,11 @@ public class DataBase {
         System.out.println("Registered ShipID: " + ShipID + " successfully");
     }
 
+    /**
+     * Получение количества нарушений корабля
+     * @param ShipID айди корабля
+     * @return кол-во нарушений
+     */
     public int getTransgressions(int ShipID) {
         try {
             stmt = c.createStatement();
@@ -163,6 +179,11 @@ public class DataBase {
         System.out.println("Database closed successfully");
     }
 
+    /**
+     * Зарегистрирован ли корабль
+     * @param ShipID айди корабля
+     * @return true - зарегистрирован, иначе - false
+     */
     public boolean isRegistered(int ShipID) {
         try {
             stmt = c.createStatement();

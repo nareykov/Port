@@ -2,6 +2,7 @@ package Logic;
 
 /**
  * Created by narey on 18.03.2017.
+ * Корабль))
  */
 public class Ship {
     private static int ID = 0;

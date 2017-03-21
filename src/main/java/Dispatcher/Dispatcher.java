@@ -6,11 +6,11 @@ import Logic.ShipsQueue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
  * Created by narey on 20.03.2017.
+ * Процесс выводящий каждые 5 секунд инфу о пирсах, очереди кораблей, складе в файл
  */
 public class Dispatcher implements Runnable {
 
@@ -66,20 +66,3 @@ public class Dispatcher implements Runnable {
         }
     }
 }
-/*
-* File settingsFile = new File("settings");
-        try {
-            settingsFile.createNewFile();
-            PrintWriter out = new PrintWriter(settingsFile.getAbsoluteFile());
-            out.print(dir);
-            out.close();
-            File typeFile = new File("type");
-            typeFile.createNewFile();
-            PrintWriter tout = new PrintWriter(typeFile.getAbsoluteFile());
-            tout.print("Book\n.pdf\nSong\n.mp3\nFilm\n.avi\n.mkv\n.mp4");
-            tout.close();
-        }catch (IOException ex){
-            log.error("File creating error");
-            return;
-        }
-* */

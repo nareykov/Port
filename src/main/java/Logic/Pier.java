@@ -8,6 +8,7 @@ import java.util.Random;
 
 /**
  * Created by narey on 18.03.2017.
+ * Причал - процесс, который разгружает-загружает корабли
  */
 public class Pier implements Runnable {
     private static int id = 0;
@@ -82,6 +83,11 @@ public class Pier implements Runnable {
         }
     }
 
+    /**
+     * Обновление ячейки таблицы, отражающей состояние причала
+     * @param ship текущий корабль в причале
+     * @param status статус выводимый в ячейку
+     */
     private synchronized void refreshTableItem(final Ship ship, final String status) {
         port.getDisplay().asyncExec(new Runnable() {
             @Override
