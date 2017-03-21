@@ -6,7 +6,7 @@ package Logic;
 public class Ship {
     private static int ID = 0;
 
-    private final int id = ID;
+    private int id = ID;
     private long duration = 0;
     private int loading = 0;
     private int unloading = 0;
@@ -18,6 +18,14 @@ public class Ship {
         this.unloading = unloading;
         this.priority = priority;
         ID++;
+    }
+
+    public Ship(int id, long duration, int loading, int unloading, int priority) {
+        this.id = id;
+        this.duration = duration;
+        this.loading = loading;
+        this.unloading = unloading;
+        this.priority = priority;
     }
 
     public long getDuration() {

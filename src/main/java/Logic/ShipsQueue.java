@@ -44,7 +44,7 @@ public class ShipsQueue {
         return ships;
     }
 
-    public synchronized Ship remove(int index) {
+    public synchronized Ship remove() {
         while (ships.isEmpty()) {
             try {
                 wait();
@@ -53,7 +53,26 @@ public class ShipsQueue {
             }
         }
 
-        Ship ship = ships.remove(index);
+        boolean flag = false;
+        Ship ship;
+        int i = 0;
+        while (!flag) {
+            for (i = 0; i < ships.size(); i++) {
+                ship = ships.get(i);
+                if (Port.getProduct() - ship.getLoading() + ship.getUnloading() >= 0) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    System.out.println(Thread.currentThread().getName() + " interrupted");
+                }
+            }
+        }
+        ship = ships.remove(i);
         display.asyncExec (new Runnable () {
             public void run () {
                 refreshQueueTable();

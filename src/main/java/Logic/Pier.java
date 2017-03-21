@@ -43,11 +43,13 @@ public class Pier implements Runnable {
     public void run() {
         while (true) {
             try {
-                ship = shipsQueue.remove(0);
+                synchronized (this) {
+                    ship = shipsQueue.remove();
+                    port.addToProduct(ship.getUnloading() - ship.getLoading());
+                }
                 System.out.println(t.getName() + ": ship <==. ID:" + ship.getId());
                 refreshTableItem(ship, "unloading");
                 Thread.sleep(2000);
-                port.addToProduct(ship.getUnloading() - ship.getLoading());
                 refreshTableItem(ship, "loading");
                 Thread.sleep(2000);
                 System.out.println(t.getName() + ": ship ==>. ID:" + ship.getId());

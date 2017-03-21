@@ -3,6 +3,7 @@ package Logic;
 import Logic.Pier;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
@@ -12,12 +13,13 @@ import java.util.ArrayList;
  * Created by narey on 18.03.2017.
  */
 public class Port {
-    private int product;
+    private static int product;
 
     private ArrayList<Pier> piers;
 
     private ShipsQueue shipsQueue;
 
+    private Label productLabel;
     private Table table;
     private Display display;
 
@@ -31,12 +33,18 @@ public class Port {
         System.out.println("Port created");
     }
 
-    public int getProduct() {
+    public static int getProduct() {
         return product;
     }
 
     public synchronized void addToProduct(int add) {
         this.product += add;
+        display.asyncExec(new Runnable() {
+            @Override
+            public void run() {
+                productLabel.setText("Product: " + product);
+            }
+        });
     }
 
     public void setProduct(int product) {
@@ -83,5 +91,9 @@ public class Port {
 
     public ArrayList<Pier> getPiers() {
         return piers;
+    }
+
+    public void setProductLabel(Label productLabel) {
+        this.productLabel = productLabel;
     }
 }
